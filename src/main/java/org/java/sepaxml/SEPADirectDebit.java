@@ -1,6 +1,5 @@
 package org.java.sepaxml;
 
-import org.java.sepaxml.xml.XMLNode;
 import org.java.sepaxml.format.SEPAFormatDate;
 import org.java.sepaxml.xml.XMLNode;
 
