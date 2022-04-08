@@ -1,6 +1,5 @@
 package org.java.sepaxml;
 
-import org.java.sepaxml.xml.XMLNode;
 import org.java.sepaxml.format.SEPAFormatDate;
 import org.java.sepaxml.xml.XMLNode;
 
@@ -21,7 +20,7 @@ public abstract class SEPA {
         }
     }
 
-    protected SEPABankAccount reciver;
+    protected SEPABankAccount receiver;
     protected List<SEPATransaction> transactions;
 
     protected Date executionDate;
@@ -31,13 +30,13 @@ public abstract class SEPA {
 
     protected PaymentMethods paymentMethod = PaymentMethods.CreditTransfer;
 
-    public SEPA(PaymentMethods paymentMethod, SEPABankAccount reciver, List<SEPATransaction> transactions) {
-        this(paymentMethod, reciver, transactions, new Date());
+    public SEPA(PaymentMethods paymentMethod, SEPABankAccount receiver, List<SEPATransaction> transactions) {
+        this(paymentMethod, receiver, transactions, new Date());
     }
 
     public SEPA(PaymentMethods paymentMethod, SEPABankAccount reciver, List<SEPATransaction> transactions, Date executionDate) {
         this.paymentMethod = paymentMethod;
-        this.reciver = reciver;
+        this.receiver = reciver;
         this.transactions = transactions;
         this.executionDate = executionDate;
     }
@@ -51,11 +50,11 @@ public abstract class SEPA {
         XMLNode nodeCstmrDrctDbtInitn = this.document.append("CstmrCdtTrfInitn");
         XMLNode nodeGrpHdr = nodeCstmrDrctDbtInitn.append("GrpHdr");
 
-        nodeGrpHdr.append("MsgId").value(this.reciver.getBIC() + "00" + SEPAFormatDate.formatDate(executionDate));
+        nodeGrpHdr.append("MsgId").value(this.receiver.getBIC() + "00" + SEPAFormatDate.formatDate(executionDate));
         nodeGrpHdr.append("CreDtTm").value(SEPAFormatDate.formatDateLong(executionDate));
         nodeGrpHdr.append("NbOfTxs").value(this.transactions.size());
         nodeGrpHdr.append("CtrlSum").value(this.getTransactionVolume().doubleValue());
-        nodeGrpHdr.append("InitgPty").append("Nm").value(this.reciver.getName());
+        nodeGrpHdr.append("InitgPty").append("Nm").value(this.receiver.getName());
 
         this.nodePmtInf = nodeCstmrDrctDbtInitn.append("PmtInf");
         this.nodePmtInf.append("PmtInfId").value("PMT-ID0-" + SEPAFormatDate.formatDate(executionDate));
@@ -71,18 +70,18 @@ public abstract class SEPA {
 
         this.nodePmtInf.append("ReqdExctnDt").value(SEPAFormatDate.formatDateShort(executionDate));
         this.nodePmtInf.append(this.getType() + "tr")
-                .append("Nm").value(this.reciver.getName());
+                .append("Nm").value(this.receiver.getName());
 
         this.nodePmtInf.append(this.getType() + "trAcct")
                 .append("Id")
                 .append("IBAN")
-                .value(this.reciver.getIBAN());
+                .value(this.receiver.getIBAN());
 
-        if (this.reciver.getBIC() != null) {
+        if (this.receiver.getBIC() != null) {
             this.nodePmtInf.append(this.getType() + "trAgt")
                     .append("FinInstnId")
                     .append("BIC")
-                    .value(this.reciver.getBIC());
+                    .value(this.receiver.getBIC());
         }
 
         this.nodePmtInf.append("ChrgBr").value("SLEV");
@@ -106,6 +105,7 @@ public abstract class SEPA {
         this.document.write(outputStream);
     }
 
+    @Override
     public String toString() {
         return this.document.toString();
     }

@@ -1,7 +1,6 @@
 package org.java.sepaxml;
 
 import org.java.sepaxml.xml.XMLNode;
-import org.java.sepaxml.xml.XMLNode;
 
 import java.util.Date;
 import java.util.List;
