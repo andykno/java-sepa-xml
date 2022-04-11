@@ -20,6 +20,7 @@ public class SEPAValidatorBIC {
      * Validates bic.
      *
      * @param bic to be validated.
+     * @return true if valid
      * @throws SEPAValidatorBICFormatException if bic is invalid.
      *                                         UnsupportedCountryException if bic's country is not supported.
      */

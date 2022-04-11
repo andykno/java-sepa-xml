@@ -19,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 
 public class XMLNode {
 
-    private XMLNode parent;
     private Document document;
     private Element node;
 
@@ -33,8 +32,7 @@ public class XMLNode {
         }
     }
 
-    public XMLNode(XMLNode parent, Document document, Element childNode) {
-        this.parent = parent;
+    public XMLNode(Document document, Element childNode) {
         this.document = document;
         this.node = childNode;
     }
@@ -49,7 +47,6 @@ public class XMLNode {
         }
 
         XMLNode childNode = new XMLNode(
-                this,
                 this.document,
                 childElement
         );
@@ -92,6 +89,7 @@ public class XMLNode {
         }
     }
 
+    @Override
     public String toString() {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
